@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALS Locadora — Alugue seu carro para Uber e 99</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --azul:#0A1628;--laranja:#E85D04;--laranja2:#ff7c2a;
+  --verde:#059669;--text:#1e293b;--text2:#64748b;--bg:#f8fafc;--white:#fff;
+  --radius:16px;--radius-sm:10px;
+}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+header{
+  background:var(--azul);padding:0 5%;position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;height:70px;
+  box-shadow:0 2px 20px rgba(0,0,0,0.3)
+}
+.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+.logo span{color:var(--laranja)}
+.logo small{color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:3px;display:block;font-weight:700;font-family:'DM Sans',sans-serif;margin-top:-4px}
+.header-cta{background:var(--laranja);color:#fff;padding:10px 22px;border-radius:50px;font-weight:600;font-size:14px;transition:all 0.2s}
+.header-cta:hover{background:var(--laranja2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,var(--azul) 0%,#162540 60%,#1a3060 100%);
+  min-height:92vh;display:flex;align-items:center;padding:60px 5%;
+  position:relative;overflow:hidden
+}
+.hero::before{
+  content:'';position:absolute;top:-20%;right:-5%;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(232,93,4,0.12) 0%,transparent 60%);
+  border-radius:50%
+}
+.hero::after{
+  content:'';position:absolute;bottom:-10%;left:10%;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 60%);
+  border-radius:50%
+}
+.hero-content{flex:1;max-width:580px;position:relative;z-index:2}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(232,93,4,0.15);border:1px solid rgba(232,93,4,0.3);
+  color:#fdba74;padding:6px 16px;border-radius:50px;font-size:13px;font-weight:600;
+  margin-bottom:24px
+}
+.hero-badge span{width:8px;height:8px;background:#E85D04;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,58px);font-weight:800;
+  color:#fff;line-height:1.1;margin-bottom:20px
+}
+.hero h1 em{color:var(--laranja);font-style:normal}
+.hero p{color:rgba(255,255,255,0.7);font-size:18px;line-height:1.7;margin-bottom:36px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{
+  background:var(--laranja);color:#fff;padding:15px 32px;border-radius:50px;
+  font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:8px;
+  transition:all 0.2s;border:none;cursor:pointer
+}
+.btn-primary:hover{background:var(--laranja2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,93,4,0.4)}
+.btn-secondary{
+  background:rgba(255,255,255,0.1);color:#fff;padding:15px 32px;border-radius:50px;
+  font-weight:600;font-size:16px;border:1px solid rgba(255,255,255,0.2);
+  display:inline-flex;align-items:center;gap:8px;transition:all 0.2s
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.15)}
+.hero-stats{display:flex;gap:32px;margin-top:48px;flex-wrap:wrap}
+.hero-stat{color:#fff}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--laranja)}
+.hero-stat-label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:2px}
+.hero-img{flex:1;display:flex;justify-content:center;align-items:center;position:relative;z-index:2;min-height:400px}
+.car-showcase{position:relative;width:100%;max-width:560px}
+.car-img-wrap{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;padding:32px;text-align:center
+}
+.car-img-wrap img{width:100%;max-width:480px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.5))}
+.car-badge{
+  position:absolute;top:20px;right:20px;background:var(--laranja);
+  color:#fff;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700
+}
+.car-info{
+  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  background:#fff;border-radius:14px;padding:14px 24px;display:flex;gap:24px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);white-space:nowrap
+}
+.car-info-item{text-align:center}
+.car-info-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--azul)}
+.car-info-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+
+/* PROCESSO */
+.section{padding:80px 5%}
+.section-center{text-align:center;max-width:600px;margin:0 auto 56px}
+.tag{
+  display:inline-block;background:rgba(232,93,4,0.1);color:var(--laranja);
+  padding:6px 16px;border-radius:50px;font-size:13px;font-weight:700;margin-bottom:16px
+}
+.section-center h2{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px;color:var(--azul)}
+.section-center p{color:var(--text2);font-size:17px;line-height:1.7}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.step{background:#fff;border-radius:var(--radius);padding:28px;border:1px solid #e2e8f0;position:relative;transition:all 0.2s}
+.step:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.08);border-color:var(--laranja)}
+.step-num{
+  width:48px;height:48px;background:var(--azul);color:#fff;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;
+  font-size:20px;font-weight:800;margin-bottom:20px
+}
+.step h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px;color:var(--azul)}
+.step p{color:var(--text2);font-size:14px;line-height:1.7}
+
+/* CARRO DESTAQUE */
+.car-section{background:var(--azul);padding:80px 5%}
+.car-section .tag{background:rgba(232,93,4,0.2)}
+.car-section .section-center h2{color:#fff}
+.car-section .section-center p{color:rgba(255,255,255,0.6)}
+
+.car-card{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;overflow:hidden;max-width:900px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr
+}
+.car-card-img{background:rgba(255,255,255,0.03);padding:40px;display:flex;align-items:center;justify-content:center}
+.car-card-img img{width:100%;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.5))}
+.car-card-info{padding:40px}
+.car-name{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:8px}
+.car-sub{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:28px}
+.car-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.car-feature{background:rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px}
+.car-feature-label{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px}
+.car-feature-val{font-size:15px;font-weight:600;color:#fff;margin-top:3px}
+.car-preco{margin-bottom:24px}
+.car-preco-label{font-size:13px;color:rgba(255,255,255,0.5)}
+.car-preco-val{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--laranja)}
+.car-preco-val small{font-size:16px;color:rgba(255,255,255,0.4)}
+.car-disponivel{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(5,150,105,0.2);
+  border:1px solid rgba(5,150,105,0.4);color:#6ee7b7;padding:6px 14px;
+  border-radius:50px;font-size:13px;font-weight:600;margin-bottom:20px
+}
+.car-disponivel span{width:8px;height:8px;background:#059669;border-radius:50%}
+
+/* DIFERENCIAIS */
+.diferenciais{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.dif{background:#fff;border-radius:var(--radius);padding:28px;border:1px solid #e2e8f0;text-align:center}
+.dif-icon{font-size:32px;margin-bottom:14px}
+.dif h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--azul);margin-bottom:8px}
+.dif p{color:var(--text2);font-size:13px;line-height:1.6}
+
+/* FORMULÁRIO */
+.form-section{background:var(--azul);padding:80px 5%}
+.form-wrap{max-width:640px;margin:0 auto}
+.form-wrap .section-center h2{color:#fff}
+.form-wrap .section-center p{color:rgba(255,255,255,0.6)}
+.form-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:24px;padding:40px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:6px;font-weight:500}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:13px 16px;background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--laranja)}
+.form-group input::placeholder{color:rgba(255,255,255,0.3)}
+.form-group select option{background:#162540;color:#fff}
+.form-group textarea{resize:vertical;min-height:100px}
+.btn-form{
+  width:100%;padding:16px;background:var(--laranja);color:#fff;border:none;
+  border-radius:50px;font-family:'Syne',sans-serif;font-weight:700;font-size:17px;
+  cursor:pointer;transition:all 0.2s;margin-top:8px
+}
+.btn-form:hover{background:var(--laranja2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,93,4,0.4)}
+.or-divider{text-align:center;color:rgba(255,255,255,0.3);margin:20px 0;font-size:13px;position:relative}
+.or-divider::before,.or-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:rgba(255,255,255,0.1)}
+.or-divider::before{left:0}
+.or-divider::after{right:0}
+.btn-whats{
+  width:100%;padding:16px;background:rgba(37,211,102,0.15);color:#25d366;
+  border:1px solid rgba(37,211,102,0.3);border-radius:50px;font-weight:700;
+  font-size:16px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;
+  justify-content:center;gap:10px;font-family:'DM Sans',sans-serif
+}
+.btn-whats:hover{background:rgba(37,211,102,0.25)}
+.btn-whats svg{width:22px;height:22px;fill:#25d366}
+
+/* FOOTER */
+footer{background:#060e1c;padding:40px 5%;text-align:center}
+footer .logo{justify-content:center;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+footer p{color:rgba(255,255,255,0.3);font-size:13px}
+
+/* WHATSAPP FLOAT */
+.wa-float{
+  position:fixed;bottom:28px;right:28px;background:#25d366;width:60px;height:60px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(37,211,102,0.4);cursor:pointer;transition:all 0.2s;z-index:999
+}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:30px;height:30px;fill:#fff}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{flex-direction:column;text-align:center;padding:60px 5%}
+  .hero-btns{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-img{margin-top:40px}
+  .car-card{grid-template-columns:1fr}
+  .car-card-img{padding:32px 32px 0}
+}
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr}
+  .car-info{flex-direction:column;gap:10px}
+  .header-cta{display:none}
+}
+
+/* SUCCESS MSG */
+.success-msg{
+  display:none;background:rgba(5,150,105,0.15);border:1px solid rgba(5,150,105,0.3);
+  border-radius:12px;padding:20px;text-align:center;color:#6ee7b7;margin-top:16px
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div><span>ALS</span> <span style="color:#fff">Locadora</span></div>
+    <small>FERRAZ DE VASCONCELOS</small>
+  </div>
+  <a href="#contato" class="header-cta">Quero alugar →</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span></span>
+      Vaga disponível agora
+    </div>
+    <h1>Alugue um carro e <em>comece a ganhar</em> hoje</h1>
+    <p>Dirija para Uber, 99 ou inDriver com nosso Volkswagen Virtus. Pagamento semanal simples, sem burocracia. Ferraz de Vasconcelos e região.</p>
+    <div class="hero-btns">
+      <a href="#contato" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Falar no WhatsApp
+      </a>
+      <a href="#contato" class="btn-secondary">Preencher formulário</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">R$ 900</div>
+        <div class="hero-stat-label">por semana</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5.000</div>
+        <div class="hero-stat-label">km incluídos/mês</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">taxa de adesão</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-img">
+    <div class="car-showcase">
+      <div class="car-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Volkswagen_Virtus_2019_%2801%29.jpg/1280px-Volkswagen_Virtus_2019_%2801%29.jpg" alt="Volkswagen Virtus Prata" onerror="this.style.display='none'">
+        <div class="car-badge">1 vaga disponível</div>
+      </div>
+      <div class="car-info">
+        <div class="car-info-item">
+          <div class="car-info-num">2019</div>
+          <div class="car-info-label">Ano</div>
+        </div>
+        <div class="car-info-item">
+          <div class="car-info-num">Automático</div>
+          <div class="car-info-label">Câmbio</div>
+        </div>
+        <div class="car-info-item">
+          <div class="car-info-num">Completo</div>
+          <div class="car-info-label">Itens</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="section" style="background:#fff">
+  <div class="section-center">
+    <div class="tag">Como funciona</div>
+    <h2>Simples, rápido e sem burocracia</h2>
+    <p>Em poucos passos você já está na estrada trabalhando e faturando</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Preencha o formulário</h3>
+      <p>Envie seus dados básicos. Analisamos seu perfil em até 24 horas úteis.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Entrevista rápida</h3>
+      <p>Conversamos pelo WhatsApp para alinhar detalhes e tirar suas dúvidas.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Assine o contrato</h3>
+      <p>Contrato simples e transparente. Caução de R$ 1.600 via Pix na assinatura.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Pegue o carro e trabalhe</h3>
+      <p>Retire o Virtus e comece a faturar no mesmo dia. Pagamento toda sexta-feira.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CARRO -->
+<section class="car-section">
+  <div class="section-center">
+    <div class="tag">Veículo disponível</div>
+    <h2>Volkswagen Virtus</h2>
+    <p>Um dos carros mais pedidos pelos passageiros no Uber e 99</p>
+  </div>
+  <div class="car-card">
+    <div class="car-card-img">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Volkswagen_Virtus_2019_%2801%29.jpg/1280px-Volkswagen_Virtus_2019_%2801%29.jpg" alt="VW Virtus" onerror="this.style.display='none'">
+    </div>
+    <div class="car-card-info">
+      <div class="car-disponivel"><span></span> Disponível agora</div>
+      <div class="car-name">Volkswagen Virtus</div>
+      <div class="car-sub">Sedan · Prata · 2019</div>
+      <div class="car-features">
+        <div class="car-feature">
+          <div class="car-feature-label">Câmbio</div>
+          <div class="car-feature-val">Automático</div>
+        </div>
+        <div class="car-feature">
+          <div class="car-feature-label">Ar-condicionado</div>
+          <div class="car-feature-val">Sim</div>
+        </div>
+        <div class="car-feature">
+          <div class="car-feature-label">KM mensal</div>
+          <div class="car-feature-val">5.000 km</div>
+        </div>
+        <div class="car-feature">
+          <div class="car-feature-label">Plataformas</div>
+          <div class="car-feature-val">Uber · 99 · inDriver</div>
+        </div>
+      </div>
+      <div class="car-preco">
+        <div class="car-preco-label">Valor semanal</div>
+        <div class="car-preco-val">R$ 900 <small>/semana</small></div>
+      </div>
+      <a href="#contato" class="btn-primary" style="font-size:15px;padding:13px 28px">Quero esse carro →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="section" style="background:#f1f5f9">
+  <div class="section-center">
+    <div class="tag">Por que a ALS?</div>
+    <h2>Tudo que você precisa para trabalhar tranquilo</h2>
+    <p>Sem pegadinhas, sem taxas escondidas. Só você e o trabalho.</p>
+  </div>
+  <div class="diferenciais">
+    <div class="dif">
+      <div class="dif-icon">💸</div>
+      <h3>Pagamento simples via Pix</h3>
+      <p>Pague toda sexta-feira direto via Pix. Rápido e sem complicação.</p>
+    </div>
+    <div class="dif">
+      <div class="dif-icon">📱</div>
+      <h3>App exclusivo do motorista</h3>
+      <p>Acesse seu contrato, faça vistorias e fale conosco direto pelo app.</p>
+    </div>
+    <div class="dif">
+      <div class="dif-icon">🔧</div>
+      <h3>Manutenção preventiva</h3>
+      <p>Revisões e manutenções maiores por nossa conta. Você só abastece.</p>
+    </div>
+    <div class="dif">
+      <div class="dif-icon">📍</div>
+      <h3>Ferraz de Vasconcelos</h3>
+      <p>Atendimento local, pessoal. Você sabe com quem está lidando.</p>
+    </div>
+    <div class="dif">
+      <div class="dif-icon">📄</div>
+      <h3>Contrato transparente</h3>
+      <p>Sem letras miúdas. Tudo explicado e assinado digitalmente.</p>
+    </div>
+    <div class="dif">
+      <div class="dif-icon">⭐</div>
+      <h3>Suporte no WhatsApp</h3>
+      <p>Qualquer problema, estamos disponíveis para te ajudar rápido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="form-section" id="contato">
+  <div class="form-wrap">
+    <div class="section-center">
+      <div class="tag">Quero alugar</div>
+      <h2>Candidate-se agora</h2>
+      <p>Preencha o formulário e entraremos em contato em até 24 horas</p>
+    </div>
+    <div class="form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome completo *</label>
+          <input type="text" id="f-nome" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp *</label>
+          <input type="tel" id="f-tel" placeholder="(11) 99999-9999">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" id="f-cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label>Cidade</label>
+          <input type="text" id="f-cidade" placeholder="Ferraz de Vasconcelos">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Plataformas que usa</label>
+        <select id="f-plat">
+          <option value="">Selecione...</option>
+          <option>Uber</option>
+          <option>99</option>
+          <option>inDriver</option>
+          <option>Uber + 99</option>
+          <option>Todas</option>
+          <option>Ainda não tenho cadastro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Experiência como motorista</label>
+        <select id="f-exp">
+          <option value="">Selecione...</option>
+          <option>Nunca trabalhei como motorista de app</option>
+          <option>Menos de 6 meses</option>
+          <option>6 meses a 1 ano</option>
+          <option>Mais de 1 ano</option>
+          <option>Mais de 3 anos</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensagem (opcional)</label>
+        <textarea id="f-msg" placeholder="Conte um pouco sobre você ou tire suas dúvidas..."></textarea>
+      </div>
+      <button class="btn-form" onclick="enviarFormulario()">Enviar candidatura →</button>
+      <div class="success-msg" id="success-msg">
+        ✅ Candidatura enviada! Entraremos em contato pelo WhatsApp em até 24 horas.
+      </div>
+      <div class="or-divider">ou fale diretamente</div>
+      <button class="btn-whats" onclick="abrirWhatsApp()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Chamar no WhatsApp agora
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800"><span style="color:#E85D04">ALS</span> <span style="color:#fff">Locadora</span></div>
+    <small style="color:rgba(255,255,255,0.3);font-size:12px;letter-spacing:2px;margin-top:4px">FERRAZ DE VASCONCELOS — SP</small>
+  </div>
+  <p>© 2026 ALS Locadora · Aluguel de veículos para motoristas de aplicativo</p>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a class="wa-float" onclick="abrirWhatsApp()" title="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SEU_WHATSAPP = '5511945156170';
+const SURL = 'https://eaxsnhwozmznphzqumbj.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVheHNuaHdvem16bnBoenF1bWJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3MTU5NzEsImV4cCI6MjA4OTI5MTk3MX0.IxLUPyoLGKuI5_PtFXe28Djy7D4UwzXMgoF6relTROk';
+let sb = null;
+document.addEventListener('DOMContentLoaded', function() {
+  try { sb = supabase.createClient(SURL, SKEY); } catch(e) {}
+});
+
+function abrirWhatsApp() {
+  const msg = encodeURIComponent('Olá! Vi o site da ALS Locadora e tenho interesse em alugar o Virtus para trabalhar no app. Pode me dar mais informações?');
+  window.open('https://wa.me/' + SEU_WHATSAPP + '?text=' + msg, '_blank');
+}
+
+async function enviarFormulario() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  if (!nome) { alert('Informe seu nome'); return; }
+  if (!tel) { alert('Informe seu WhatsApp'); return; }
+  const plat = document.getElementById('f-plat').value;
+  const exp = document.getElementById('f-exp').value;
+  const msg = document.getElementById('f-msg').value;
+  const cpf = document.getElementById('f-cpf').value;
+  const cidade = document.getElementById('f-cidade').value || 'Ferraz de Vasconcelos';
+  const btn = document.querySelector('.btn-form');
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  // Save to Supabase
+  if (sb) {
+    await sb.from('candidaturas').insert({
+      nome, telefone: tel, cpf, cidade,
+      plataforma: plat, experiencia: exp,
+      mensagem: msg, status: 'novo'
+    });
+  }
+  // Also send WhatsApp notification
+  const texto = '*Nova candidatura — ALS Locadora*\n\n*Nome:* ' + nome + '\n*WhatsApp:* ' + tel + '\n*CPF:* ' + (cpf||'não informado') + '\n*Cidade:* ' + cidade + '\n*Plataforma:* ' + (plat||'não informado') + '\n*Experiência:* ' + (exp||'não informado') + '\n*Mensagem:* ' + (msg||'—');
+  window.open('https://wa.me/' + SEU_WHATSAPP + '?text=' + encodeURIComponent(texto), '_blank');
+  document.getElementById('success-msg').style.display = 'block';
+  btn.textContent = 'Candidatura enviada ✓';
+  ['f-nome','f-tel','f-cpf','f-cidade','f-msg'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-plat').value = '';
+  document.getElementById('f-exp').value = '';
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
