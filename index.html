@@ -77,24 +77,25 @@ header{
 .hero-stat-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--laranja)}
 .hero-stat-label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:2px}
 .hero-img{flex:1;display:flex;justify-content:center;align-items:center;position:relative;z-index:2;min-height:400px}
-.car-showcase{position:relative;width:100%;max-width:560px}
+.car-showcase{width:100%;max-width:560px}
 .car-img-wrap{
   background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-  border-radius:24px;padding:32px;text-align:center
+  border-radius:24px;padding:32px;text-align:center;position:relative
 }
 .car-img-wrap img{width:100%;max-width:480px;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.5))}
 .car-badge{
-  position:absolute;top:20px;right:20px;background:var(--laranja);
-  color:#fff;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700
+  position:absolute;top:16px;right:16px;background:var(--laranja);
+  color:#fff;padding:6px 14px;border-radius:50px;font-size:13px;font-weight:700
 }
 .car-info{
-  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
-  background:#fff;border-radius:14px;padding:14px 24px;display:flex;gap:24px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);white-space:nowrap
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  border-radius:14px;padding:14px 24px;display:flex;gap:24px;
+  margin-top:16px;justify-content:center;
 }
+
 .car-info-item{text-align:center}
-.car-info-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--azul)}
-.car-info-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.car-info-num{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.car-info-label{font-size:11px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.5px}
 
 /* PROCESSO */
 .section{padding:80px 5%}
@@ -257,8 +258,8 @@ footer p{color:rgba(255,255,255,0.3);font-size:13px}
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num">R$ 900</div>
-        <div class="hero-stat-label">por semana</div>
+        <div class="hero-stat-num">Pix</div>
+        <div class="hero-stat-label">pagamento semanal</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">5.000</div>
@@ -274,7 +275,9 @@ footer p{color:rgba(255,255,255,0.3);font-size:13px}
   <div class="hero-img">
     <div class="car-showcase">
       <div class="car-img-wrap">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Volkswagen_Virtus_2019_%2801%29.jpg/1280px-Volkswagen_Virtus_2019_%2801%29.jpg" alt="Volkswagen Virtus Prata" onerror="this.style.display='none'">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Volkswagen_Virtus_2019_%2801%29.jpg/1280px-Volkswagen_Virtus_2019_%2801%29.jpg" 
+     alt="Volkswagen Virtus Prata 2019"
+     onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Volkswagen_Virtus_2019.jpg/1280px-Volkswagen_Virtus_2019.jpg';this.onerror=null;" onerror="this.style.display='none'">
         <div class="car-badge">1 vaga disponível</div>
       </div>
       <div class="car-info">
@@ -360,8 +363,8 @@ footer p{color:rgba(255,255,255,0.3);font-size:13px}
         </div>
       </div>
       <div class="car-preco">
-        <div class="car-preco-label">Valor semanal</div>
-        <div class="car-preco-val">R$ 900 <small>/semana</small></div>
+        <div class="car-preco-label">Forma de pagamento</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;margin-top:6px">Pagamento semanal via Pix</div>
       </div>
       <a href="#contato" class="btn-primary" style="font-size:15px;padding:13px 28px">Quero esse carro →</a>
     </div>
