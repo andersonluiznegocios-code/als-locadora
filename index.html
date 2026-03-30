@@ -159,7 +159,7 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
     <small>FERRAZ DE VASCONCELOS</small>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
-    <button onclick="abrirGaleria()" style="background:rgba(255,255,255,0.1);color:#fff;padding:10px 20px;border-radius:50px;font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+    <button onclick="document.getElementById('gallery-overlay').classList.add('open');document.body.style.overflow='hidden';carregarGaleria();" style="background:rgba(255,255,255,0.1);color:#fff;padding:10px 20px;border-radius:50px;font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       Fotos do Carro
     </button>
@@ -378,6 +378,181 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     e.preventDefault();
     var el = document.querySelector(a.getAttribute('href'));
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ===== GALLERY =====
+var galeriaFotos = [];
+var lightboxIdx = 0;
+
+async function carregarGaleria() {
+  var grid = document.getElementById('gallery-grid');
+  var empty = document.getElementById('gallery-empty');
+  if (!grid) return;
+  if (empty) { empty.style.display = 'block'; empty.innerHTML = '<p style="color:#64748b;font-size:16px;padding:40px">Carregando fotos...</p>'; }
+  var loaded = false;
+  try {
+    if (typeof sb !== 'undefined' && sb) {
+      var result = await sb.from('galeria_fotos').select('*').order('created_at', {ascending: false});
+      if (result.data && result.data.length > 0) {
+        galeriaFotos = result.data.map(function(f){ return {url:f.url, id:f.id}; });
+        loaded = true;
+      }
+    }
+  } catch(e) { console.log('Gallery load error:', e); }
+  if (!loaded) {
+    var mainImg = document.querySelector('.car-photo-wrap img');
+    galeriaFotos = mainImg ? [{url: mainImg.src, id: 'main'}] : [];
+  }
+  renderGaleria();
+}
+
+function renderGaleria() {
+  var grid = document.getElementById('gallery-grid');
+  var empty = document.getElementById('gallery-empty');
+  if (!grid) return;
+  var fotos = galeriaFotos.filter(function(f){ return f.url; });
+  if (fotos.length === 0) {
+    if (empty) { empty.style.display = 'block'; empty.innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p style="color:#64748b;font-size:16px;margin-top:16px">Nenhuma foto ainda</p>'; }
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.querySelectorAll('.gallery-item').forEach(function(el){ el.remove(); });
+  fotos.forEach(function(foto, idx) {
+    var div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.onclick = function(){ abrirLightbox(idx); };
+    var img = document.createElement('img');
+    img.src = foto.url;
+    img.alt = 'Volkswagen Virtus - Foto ' + (idx+1);
+    img.loading = 'lazy';
+    div.appendChild(img);
+    var uploadArea = document.getElementById('gallery-upload-area');
+    if (uploadArea && uploadArea.style.display !== 'none') {
+      var btn = document.createElement('button');
+      btn.innerHTML = '✕';
+      btn.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;z-index:2';
+      btn.onclick = (function(id, i){ return function(e){ e.stopPropagation(); deletarFoto(id, i); }; })(foto.id, idx);
+      div.appendChild(btn);
+    }
+    grid.appendChild(div);
+  });
+}
+
+function abrirGaleria() {
+  var overlay = document.getElementById('gallery-overlay');
+  if (!overlay) return;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (typeof currentRole !== 'undefined' && currentRole === 'locador') {
+    var ua = document.getElementById('gallery-upload-area');
+    if (ua) ua.style.display = 'block';
+  }
+  carregarGaleria();
+}
+
+function fecharGaleria() {
+  var overlay = document.getElementById('gallery-overlay');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function uploadFotos(files) {
+  if (!files || files.length === 0) return;
+  var btn = document.querySelector('.gallery-upload-btn');
+  if (btn) btn.textContent = 'Enviando...';
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var compressed = await compressImageFile(file, 800, 0.75);
+    await new Promise(function(resolve) {
+      var reader = new FileReader();
+      reader.onload = async function(e) {
+        var url = e.target.result;
+        try {
+          if (typeof sb !== 'undefined' && sb) {
+            await sb.from('galeria_fotos').insert({url: url, created_at: new Date().toISOString()});
+          } else {
+            galeriaFotos.unshift({url: url, id: Date.now()});
+          }
+        } catch(err) {
+          galeriaFotos.unshift({url: url, id: Date.now()});
+        }
+        resolve();
+      };
+      reader.readAsDataURL(compressed);
+    });
+  }
+  if (btn) btn.textContent = 'Adicionar Fotos';
+  carregarGaleria();
+}
+
+async function compressImageFile(file, maxW, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ratio = Math.min(maxW/img.width, maxW/img.height);
+      if (ratio > 1) ratio = 1;
+      canvas.width = img.width * ratio;
+      canvas.height = img.height * ratio;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function(blob){ resolve(blob); }, 'image/jpeg', quality);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  });
+}
+
+async function deletarFoto(id, idx) {
+  if (!confirm('Remover esta foto?')) return;
+  try {
+    if (typeof sb !== 'undefined' && sb) {
+      await sb.from('galeria_fotos').delete().eq('id', id);
+    }
+  } catch(e) {}
+  galeriaFotos.splice(idx, 1);
+  renderGaleria();
+}
+
+function abrirLightbox(idx) {
+  lightboxIdx = idx;
+  var foto = galeriaFotos[idx];
+  if (!foto) return;
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  if (!lb || !lbImg) return;
+  lbImg.src = foto.url;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharLightbox() {
+  var lb = document.getElementById('lightbox');
+  if (lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  lightboxIdx = (lightboxIdx + dir + galeriaFotos.length) % galeriaFotos.length;
+  var lbImg = document.getElementById('lightbox-img');
+  if (lbImg) lbImg.src = galeriaFotos[lightboxIdx].url;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var lb = document.getElementById('lightbox');
+  if (lb) {
+    lb.addEventListener('click', function(e){ if (e.target === this) fecharLightbox(); });
+  }
+  document.addEventListener('keydown', function(e) {
+    var lb = document.getElementById('lightbox');
+    var go = document.getElementById('gallery-overlay');
+    if (lb && lb.classList.contains('open')) {
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+      if (e.key === 'Escape') fecharLightbox();
+    }
+    if (go && go.classList.contains('open') && e.key === 'Escape') fecharGaleria();
   });
 });
 </script>
