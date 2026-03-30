@@ -124,6 +124,33 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
   .header-cta{display:none}
 }
 
+/* ADMIN PANEL */
+.admin-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:99999;align-items:center;justify-content:center}
+.admin-modal.open{display:flex}
+.admin-box{background:#0A1628;border:1px solid rgba(232,93,4,0.4);border-radius:20px;padding:36px;width:100%;max-width:400px;margin:16px}
+.admin-box h3{font-family:'Syne',sans-serif;font-size:22px;color:#fff;margin-bottom:6px}
+.admin-box p{color:#64748b;font-size:14px;margin-bottom:24px}
+.admin-input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:15px;outline:none;margin-bottom:12px;font-family:'DM Sans',sans-serif}
+.admin-input:focus{border-color:#E85D04}
+.admin-btn{width:100%;padding:14px;background:#E85D04;color:#fff;border:none;border-radius:50px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:10px}
+.admin-btn:hover{background:#ff7c2a}
+.admin-btn-cancel{width:100%;padding:12px;background:transparent;color:#64748b;border:1px solid rgba(255,255,255,0.1);border-radius:50px;font-size:14px;cursor:pointer}
+.admin-btn-cancel:hover{background:rgba(255,255,255,0.05)}
+.admin-panel{background:#0A1628;border-top:3px solid #E85D04;padding:24px;position:fixed;bottom:0;left:0;width:100%;z-index:9998;transform:translateY(100%);transition:transform 0.3s}
+.admin-panel.open{transform:translateY(0)}
+.admin-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.admin-panel-header h3{color:#fff;font-family:'Syne',sans-serif;font-size:18px}
+.admin-panel-close{background:rgba(255,255,255,0.1);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px}
+.admin-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.admin-action-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;color:#fff;cursor:pointer;text-align:center;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.admin-action-btn:hover{background:rgba(232,93,4,0.15);border-color:#E85D04}
+.admin-action-btn svg{display:block;margin:0 auto 8px}
+.admin-action-btn span{font-size:13px;font-weight:600}
+.admin-action-btn small{display:block;font-size:11px;color:#64748b;margin-top:2px}
+/* Admin link footer */
+.admin-footer-link{color:rgba(255,255,255,0.15);font-size:11px;cursor:pointer;background:none;border:none;padding:4px 8px}
+.admin-footer-link:hover{color:rgba(255,255,255,0.4)}
+
 /* GALLERY */
 .gallery-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;overflow-y:auto}
 .gallery-overlay.open{display:block}
@@ -156,10 +183,10 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
 <header>
   <div class="logo">
     <div><span>ALS</span> <span style="color:#fff">Locadora</span></div>
-    <small>FERRAZ DE VASCONCELOS</small>
+    <small>POÁ - SP</small>
   </div>
   <div style="display:flex;align-items:center;gap:12px">
-    <button onclick="document.getElementById('gallery-overlay').classList.add('open');document.body.style.overflow='hidden';carregarGaleria();" style="background:rgba(255,255,255,0.1);color:#fff;padding:10px 20px;border-radius:50px;font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+    <button id="btn-fotos" onclick="abrirGaleria()" style="background:rgba(255,255,255,0.1);color:#fff;padding:10px 20px;border-radius:50px;font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       Fotos do Carro
     </button>
@@ -171,7 +198,7 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
   <div class="hero-content">
     <div class="hero-badge"><span></span>Vaga disponível agora</div>
     <h1>Alugue um carro e <em>comece a ganhar</em> hoje</h1>
-    <p>Dirija para Uber, 99 ou inDriver com nosso Volkswagen Virtus. Pagamento semanal simples, sem burocracia. Ferraz de Vasconcelos e região.</p>
+    <p>Dirija para Uber, 99 ou inDriver com nosso Volkswagen Virtus. Pagamento semanal simples, sem burocracia. Poá e região.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="abrirWhatsApp()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
@@ -249,7 +276,7 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
     <div class="dif"><div class="dif-icon">💸</div><h3>Pagamento simples via Pix</h3><p>Pague toda sexta-feira direto via Pix. Rápido e sem complicação.</p></div>
     <div class="dif"><div class="dif-icon">📱</div><h3>App exclusivo do motorista</h3><p>Acesse seu contrato, faça vistorias e fale conosco direto pelo app.</p></div>
     <div class="dif"><div class="dif-icon">🔧</div><h3>Manutenção preventiva</h3><p>Revisões e manutenções maiores por nossa conta. Você só abastece.</p></div>
-    <div class="dif"><div class="dif-icon">📍</div><h3>Ferraz de Vasconcelos</h3><p>Atendimento local, pessoal. Você sabe com quem está lidando.</p></div>
+    <div class="dif"><div class="dif-icon">📍</div><h3>Poá</h3><p>Atendimento local, pessoal. Você sabe com quem está lidando.</p></div>
     <div class="dif"><div class="dif-icon">📄</div><h3>Contrato transparente</h3><p>Sem letras miúdas. Tudo explicado e assinado digitalmente.</p></div>
     <div class="dif"><div class="dif-icon">⭐</div><h3>Suporte no WhatsApp</h3><p>Qualquer problema, estamos disponíveis para te ajudar rápido.</p></div>
   </div>
@@ -269,7 +296,7 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
       </div>
       <div class="form-row">
         <div class="fg"><label>CPF</label><input type="text" id="f-cpf" placeholder="000.000.000-00"></div>
-        <div class="fg"><label>Cidade</label><input type="text" id="f-cidade" placeholder="Ferraz de Vasconcelos"></div>
+        <div class="fg"><label>Cidade</label><input type="text" id="f-cidade" placeholder="Poá"></div>
       </div>
       <div class="fg"><label>Plataformas que usa</label>
         <select id="f-plat"><option value="">Selecione...</option><option>Uber</option><option>99</option><option>inDriver</option><option>Uber + 99</option><option>Todas</option><option>Ainda não tenho cadastro</option></select>
@@ -291,12 +318,54 @@ footer{background:#060e1c;padding:36px 5%;text-align:center}
 
 <footer>
   <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px"><span style="color:#E85D04">ALS</span> <span style="color:#fff">Locadora</span></div>
-  <div style="color:rgba(255,255,255,0.3);font-size:12px;letter-spacing:2px;margin-bottom:12px">FERRAZ DE VASCONCELOS — SP</div>
+  <div style="color:rgba(255,255,255,0.3);font-size:12px;letter-spacing:2px;margin-bottom:12px">POÁ - SP — SP</div>
   <p style="color:rgba(255,255,255,0.2);font-size:13px">© 2026 ALS Locadora · Aluguel de veículos para motoristas de aplicativo</p>
+<button class="admin-footer-link" onclick="abrirAdminLogin()">⚙</button>
 </footer>
 
 <div class="wa-float" onclick="abrirWhatsApp()">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="admin-modal" id="admin-modal">
+  <div class="admin-box">
+    <h3>🔐 Área Admin</h3>
+    <p>ALS Locadora — acesso restrito</p>
+    <input type="password" class="admin-input" id="admin-senha" placeholder="Senha" onkeydown="if(event.key==='Enter') verificarAdmin()">
+    <button class="admin-btn" onclick="verificarAdmin()">Entrar</button>
+    <button class="admin-btn-cancel" onclick="fecharAdminLogin()">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="admin-panel">
+  <div class="admin-panel-header">
+    <h3>⚙️ Painel Admin — ALS Locadora</h3>
+    <button class="admin-panel-close" onclick="fecharAdminPanel()">✕</button>
+  </div>
+  <div class="admin-actions">
+    <div class="admin-action-btn" onclick="abrirGaleriaAdmin()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E85D04" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <span>Gerenciar Fotos</span>
+      <small>Adicionar / remover fotos do carro</small>
+    </div>
+    <div class="admin-action-btn" onclick="window.open('als-locadora-v2.html','_blank')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E85D04" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Painel de Gestão</span>
+      <small>Motoristas, pagamentos e mais</small>
+    </div>
+    <div class="admin-action-btn" onclick="toggleVaga()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E85D04" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="vaga-btn-label">Status da Vaga</span>
+      <small id="vaga-btn-sub">Disponível / Indisponível</small>
+    </div>
+    <div class="admin-action-btn" onclick="sairAdmin()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span style="color:#64748b">Sair</span>
+      <small>Encerrar sessão admin</small>
+    </div>
+  </div>
 </div>
 
 <!-- GALLERY MODAL -->
@@ -356,7 +425,7 @@ async function enviarFormulario() {
   var exp = document.getElementById('f-exp').value;
   var msg = document.getElementById('f-msg').value;
   var cpf = document.getElementById('f-cpf').value;
-  var cidade = document.getElementById('f-cidade').value || 'Ferraz de Vasconcelos';
+  var cidade = document.getElementById('f-cidade').value || 'Poá';
   var btn = document.getElementById('btn-form');
   btn.textContent = 'Enviando...'; btn.disabled = true;
   if (sb) {
@@ -380,6 +449,78 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   });
 });
+
+// ===== ADMIN =====
+var adminLogado = false;
+
+function abrirAdminLogin() {
+  document.getElementById('admin-modal').classList.add('open');
+  setTimeout(function(){ document.getElementById('admin-senha').focus(); }, 100);
+}
+
+function fecharAdminLogin() {
+  document.getElementById('admin-modal').classList.remove('open');
+  document.getElementById('admin-senha').value = '';
+}
+
+function verificarAdmin() {
+  var senha = document.getElementById('admin-senha').value;
+  if (senha === 'ALS@2025') {
+    adminLogado = true;
+    fecharAdminLogin();
+    document.getElementById('admin-panel').classList.add('open');
+    atualizarStatusVaga();
+  } else {
+    document.getElementById('admin-senha').style.borderColor = '#ef4444';
+    setTimeout(function(){ document.getElementById('admin-senha').style.borderColor = 'rgba(255,255,255,0.15)'; }, 1000);
+    document.getElementById('admin-senha').value = '';
+    document.getElementById('admin-senha').placeholder = 'Senha incorreta!';
+    setTimeout(function(){ document.getElementById('admin-senha').placeholder = 'Senha'; }, 2000);
+  }
+}
+
+function fecharAdminPanel() {
+  document.getElementById('admin-panel').classList.remove('open');
+}
+
+function sairAdmin() {
+  adminLogado = false;
+  fecharAdminPanel();
+}
+
+function abrirGaleriaAdmin() {
+  adminGaleriaLogado = true;
+  fecharAdminPanel();
+  abrirGaleria();
+  setTimeout(function(){
+    var ua = document.getElementById('gallery-upload-area');
+    if (ua) ua.style.display = 'block';
+  }, 100);
+}
+
+function atualizarStatusVaga() {
+  var badge = document.querySelector('.hero-badge');
+  var disponivel = badge && badge.textContent.includes('disponível');
+  document.getElementById('vaga-btn-sub').textContent = disponivel ? '● Disponível agora' : '● Indisponível';
+}
+
+function toggleVaga() {
+  var badge = document.querySelector('.hero-badge');
+  if (!badge) return;
+  if (badge.textContent.includes('disponível')) {
+    badge.innerHTML = '<span></span>Sem vagas no momento';
+    badge.style.background = 'rgba(239,68,68,0.15)';
+    badge.style.borderColor = 'rgba(239,68,68,0.3)';
+    badge.style.color = '#fca5a5';
+    document.getElementById('vaga-btn-sub').textContent = '● Indisponível';
+  } else {
+    badge.innerHTML = '<span></span>Vaga disponível agora';
+    badge.style.background = '';
+    badge.style.borderColor = '';
+    badge.style.color = '';
+    document.getElementById('vaga-btn-sub').textContent = '● Disponível agora';
+  }
+}
 
 // ===== GALLERY =====
 var galeriaFotos = [];
@@ -439,16 +580,46 @@ function renderGaleria() {
   });
 }
 
+var adminGaleriaLogado = false;
+var fotosClickCount = 0;
+var fotosClickTimer = null;
+
+function clickFotos() {
+  fotosClickCount++;
+  if (fotosClickTimer) clearTimeout(fotosClickTimer);
+  fotosClickTimer = setTimeout(function() {
+    if (fotosClickCount >= 5) {
+      // 5 clicks = admin mode
+      abrirGaleriaAdmin();
+    } else {
+      abrirGaleria();
+    }
+    fotosClickCount = 0;
+  }, 500);
+}
+
 function abrirGaleria() {
   var overlay = document.getElementById('gallery-overlay');
   if (!overlay) return;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  if (typeof currentRole !== 'undefined' && currentRole === 'locador') {
+  if (adminGaleriaLogado || (typeof currentRole !== 'undefined' && currentRole === 'locador')) {
     var ua = document.getElementById('gallery-upload-area');
     if (ua) ua.style.display = 'block';
   }
   carregarGaleria();
+}
+
+function abrirGaleriaAdmin() {
+  var senha = prompt('Senha:');
+  if (senha === 'ALS@2025') {
+    adminGaleriaLogado = true;
+    abrirGaleria();
+    var ua = document.getElementById('gallery-upload-area');
+    if (ua) ua.style.display = 'block';
+  } else if (senha !== null) {
+    alert('Senha incorreta!');
+  }
 }
 
 function fecharGaleria() {
@@ -540,6 +711,34 @@ function navLightbox(dir) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Long press on Fotos button = admin mode (hold 2 seconds)
+  var btnFotos = document.getElementById('btn-fotos');
+  if (btnFotos) {
+    var pressTimer = null;
+    var pressed = false;
+
+    function startPress(e) {
+      pressed = false;
+      pressTimer = setTimeout(function() {
+        pressed = true;
+        abrirGaleriaAdmin();
+      }, 2000);
+    }
+
+    function cancelPress(e) {
+      if (pressTimer) clearTimeout(pressTimer);
+      if (!pressed) abrirGaleria();
+      pressed = false;
+    }
+
+    btnFotos.addEventListener('mousedown', startPress);
+    btnFotos.addEventListener('mouseup', cancelPress);
+    btnFotos.addEventListener('mouseleave', function(){ if(pressTimer) clearTimeout(pressTimer); pressed=false; });
+    btnFotos.addEventListener('touchstart', function(e){ e.preventDefault(); startPress(e); });
+    btnFotos.addEventListener('touchend', function(e){ e.preventDefault(); cancelPress(e); });
+    btnFotos.removeAttribute('onclick');
+  }
+
   var lb = document.getElementById('lightbox');
   if (lb) {
     lb.addEventListener('click', function(e){ if (e.target === this) fecharLightbox(); });
