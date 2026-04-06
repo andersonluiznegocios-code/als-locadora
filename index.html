@@ -827,6 +827,155 @@ document.addEventListener('DOMContentLoaded',function(){
     if(go&&go.classList.contains('open')&&e.key==='Escape')fecharGaleria();
   });
 });
+
+// ===== LINK GENERATOR =====
+var linkGerado = '';
+
+function abrirLinkForm() {
+  fecharAdminPanel();
+  var lm = document.getElementById('link-modal');
+  if (lm) { lm.classList.add('open'); }
+}
+
+function fecharLinkModal() {
+  var lm = document.getElementById('link-modal');
+  if (lm) lm.classList.remove('open');
+}
+
+function gerarLink() {
+  var nome = document.getElementById('link-cliente-nome').value.trim();
+  var base = window.location.origin + window.location.pathname.replace('index.html','');
+  var token = btoa(Date.now() + '_als_' + Math.random().toString(36).substr(2,6)).replace(/=/g,'');
+  linkGerado = base + '?cadastro=1&token=' + token + (nome ? '&cliente=' + encodeURIComponent(nome) : '');
+  var out = document.getElementById('link-output');
+  if (out) { out.style.display = 'block'; out.textContent = linkGerado; }
+  var acoes = document.getElementById('link-acoes');
+  if (acoes) acoes.style.display = 'flex';
+}
+
+function copiarLink() {
+  if (!linkGerado) return;
+  navigator.clipboard.writeText(linkGerado).then(function() {
+    var btn = document.querySelector('.btn-copy-link');
+    if (btn) { btn.textContent = '✅ Copiado!'; setTimeout(function(){ btn.textContent = '📋 Copiar Link'; }, 2000); }
+  }).catch(function() {
+    prompt('Copie o link:', linkGerado);
+  });
+}
+
+function enviarLinkWhats() {
+  if (!linkGerado) return;
+  var nome = document.getElementById('link-cliente-nome').value.trim();
+  var msg = 'Olá' + (nome ? ', *'+nome+'*' : '') + '! 😊
+
+';
+  msg += 'Para darmos início ao processo de locação do *VW Virtus*, preencha o formulário de cadastro pelo link abaixo:
+
+';
+  msg += '🔗 ' + linkGerado + '
+
+';
+  msg += 'Leva menos de 5 minutos! Em até 24h entraremos em contato. 🚗
+
+';
+  msg += '*Anderson — ALS Locadora*
+📍 Poá - SP';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ===== FORMULÁRIO CADASTRO =====
+function abrirFormModal() {
+  var fm = document.getElementById('form-modal');
+  if (fm) { fm.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+
+function fecharFormModal() {
+  var fm = document.getElementById('form-modal');
+  if (fm) { fm.classList.remove('open'); document.body.style.overflow = ''; }
+}
+
+function getRadioVal(name) {
+  var el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : '';
+}
+
+function getChecksVal(name) {
+  var els = document.querySelectorAll('input[name="'+name+'"]:checked');
+  return Array.from(els).map(function(e){ return e.value; }).join(', ');
+}
+
+function gv(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+async function enviarFormCadastro() {
+  var nome = gv('fm-nome');
+  var whats = gv('fm-whats');
+  var cpf = gv('fm-cpf');
+  var cnh = gv('fm-cnh');
+  var aceite = document.getElementById('fm-aceite') && document.getElementById('fm-aceite').checked;
+  if (!nome) { alert('Informe o nome completo'); return; }
+  if (!whats) { alert('Informe o WhatsApp'); return; }
+  if (!cpf) { alert('Informe o CPF'); return; }
+  if (!cnh) { alert('Informe o número da CNH'); return; }
+  if (!aceite) { alert('Você precisa aceitar os termos para continuar'); return; }
+  var btn = document.getElementById('btn-enviar-form');
+  if (btn) { btn.textContent = 'Enviando...'; btn.disabled = true; }
+  var dados = {
+    nome: nome, data_nascimento: gv('fm-nasc'), cpf: cpf, rg: gv('fm-rg'),
+    nome_mae: gv('fm-mae'), naturalidade: gv('fm-natural'), estado_civil: gv('fm-civil'),
+    profissao: gv('fm-prof'), renda: gv('fm-renda'), whatsapp: whats,
+    telefone: gv('fm-tel'), email: gv('fm-email'), cep: gv('fm-cep'),
+    rua: gv('fm-rua'), numero: gv('fm-num'), complemento: gv('fm-comp'),
+    bairro: gv('fm-bairro'), cidade: gv('fm-cidade'), estado: gv('fm-estado'),
+    tempo_residencia: gv('fm-tempo-res'), tipo_moradia: getRadioVal('moradia'),
+    cnh_numero: cnh, cnh_categoria: gv('fm-cat'), cnh_validade: gv('fm-cnh-val'),
+    cnh_primeira: gv('fm-cnh-ini'), cnh_pontos: gv('fm-pontos'),
+    infracoes: getRadioVal('infracoes'), infracoes_desc: gv('fm-infracoes-desc'),
+    local_guarda: getRadioVal('guarda'), end_guarda: gv('fm-end-guarda'),
+    cameras: getRadioVal('cameras'), cobertura: getRadioVal('cobertura'),
+    iluminada: getRadioVal('iluminada'), plataformas: getChecksVal('plat'),
+    nota_media: gv('fm-nota'), tempo_motorista: gv('fm-tempo-app'),
+    banco: gv('fm-banco'), agencia: gv('fm-agencia'), conta: gv('fm-conta'),
+    pix: gv('fm-pix'), pix_tipo: gv('fm-pix-tipo'),
+    ref1_nome: gv('fm-ref1-nome'), ref1_tel: gv('fm-ref1-tel'), ref1_rel: gv('fm-ref1-rel'),
+    ref2_nome: gv('fm-ref2-nome'), ref2_tel: gv('fm-ref2-tel'), ref2_rel: gv('fm-ref2-rel'),
+    antecedentes: getRadioVal('antec'), bloqueio_anterior: getRadioVal('bloqueio'),
+    serasa: getRadioVal('serasa'), emergencia_nome: gv('fm-emerg-nome'),
+    emergencia_tel: gv('fm-emerg-tel'), emergencia_rel: gv('fm-emerg-rel'),
+    status: 'novo', created_at: new Date().toISOString()
+  };
+  try {
+    if (typeof sb !== 'undefined' && sb) { await sb.from('motoristas').insert(dados); }
+  } catch(e) { console.log('Supabase err:', e); }
+  var msg = '*Novo Cadastro — ALS Locadora*
+
+';
+  msg += '*Nome:* ' + nome + '
+*WhatsApp:* ' + whats + '
+*CPF:* ' + cpf;
+  msg += '
+*CNH:* ' + cnh + '
+*Cidade:* ' + gv('fm-cidade');
+  msg += '
+*Plataformas:* ' + getChecksVal('plat');
+  msg += '
+*Local de guarda:* ' + getRadioVal('guarda');
+  msg += '
+*Antecedentes:* ' + getRadioVal('antec');
+  msg += '
+*Serasa:* ' + getRadioVal('serasa');
+  window.open('https://wa.me/5511945156170?text=' + encodeURIComponent(msg), '_blank');
+  var ff = document.getElementById('form-fields');
+  var fs = document.getElementById('form-success');
+  if (ff) ff.style.display = 'none';
+  if (fs) fs.style.display = 'block';
+}
+
+// Auto-open form if URL has ?cadastro=1
+document.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('cadastro') === '1') { abrirFormModal(); }
+});
+
 </script>
 </body>
 </html>
