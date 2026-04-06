@@ -186,6 +186,46 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
 .lightbox-nav{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.12);border:none;color:#fff;width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:22px}
 .lightbox-prev{left:14px}.lightbox-next{right:14px}
 
+/* PROPOSTA FORM */
+.form-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99998;overflow-y:auto}
+.form-modal.open{display:block}
+.form-wrap-modal{max-width:700px;margin:30px auto;padding:0 16px 40px}
+.form-header-modal{background:#1a1a1a;border-top:4px solid #CC0000;border-radius:16px 16px 0 0;padding:24px 28px;display:flex;align-items:center;justify-content:space-between}
+.form-header-modal h2{color:#fff;font-family:'Syne',sans-serif;font-size:20px}
+.form-header-modal p{color:#888;font-size:13px;margin-top:4px}
+.form-close-modal{background:rgba(255,255,255,0.1);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:18px;flex-shrink:0}
+.form-body-modal{background:#111;border-radius:0 0 16px 16px;padding:28px}
+.form-section-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(204,0,0,0.3)}
+.fm-row{display:grid;gap:12px;margin-bottom:12px}
+.fm-row-2{grid-template-columns:1fr 1fr}
+.fm-row-3{grid-template-columns:1fr 1fr 1fr}
+.fm-row-1{grid-template-columns:1fr}
+.fg-m label{display:block;font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px}
+.fg-m input,.fg-m select,.fg-m textarea{width:100%;padding:10px 13px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s}
+.fg-m input:focus,.fg-m select:focus,.fg-m textarea:focus{border-color:#CC0000}
+.fg-m input::placeholder,.fg-m textarea::placeholder{color:rgba(255,255,255,0.2)}
+.fg-m select option{background:#1a1a1a}
+.fg-m textarea{resize:vertical;min-height:70px}
+.check-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.check-group label{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;color:#ccc;transition:all 0.2s}
+.check-group label:hover{border-color:#CC0000;background:rgba(204,0,0,0.1)}
+.check-group input[type=checkbox],.check-group input[type=radio]{accent-color:#CC0000}
+.aviso-prazo{background:rgba(204,0,0,0.1);border:1px solid rgba(204,0,0,0.3);border-radius:10px;padding:12px 16px;color:#ff9999;font-size:13px;line-height:1.6;margin:16px 0}
+.btn-enviar-form{width:100%;padding:15px;background:#CC0000;color:#fff;border:none;border-radius:50px;font-family:'Syne',sans-serif;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.2s;margin-top:10px}
+.btn-enviar-form:hover{background:#ff2222;transform:translateY(-2px)}
+.btn-enviar-form:disabled{background:#555;cursor:not-allowed;transform:none}
+.form-success{display:none;text-align:center;padding:40px 20px}
+.form-success h3{color:#22c55e;font-family:'Syne',sans-serif;font-size:24px;margin-bottom:12px}
+.form-success p{color:#888;font-size:15px;line-height:1.7}
+/* Link generator */
+.link-gen-box{background:#1a1a1a;border:1px solid rgba(204,0,0,0.3);border-radius:14px;padding:20px;margin-bottom:20px}
+.link-gen-box h4{color:#fff;font-family:'Syne',sans-serif;font-size:15px;margin-bottom:6px}
+.link-gen-box p{color:#888;font-size:13px;margin-bottom:14px}
+.link-output{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;color:#CC0000;font-size:13px;word-break:break-all;margin-bottom:10px;display:none}
+.btn-copy-link{background:#CC0000;color:#fff;border:none;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;margin-right:8px}
+.btn-copy-link:hover{background:#ff2222}
+.btn-whats-link{background:rgba(37,211,102,0.15);color:#25d366;border:1px solid rgba(37,211,102,0.3);padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer}
+
 /* ADMIN */
 .admin-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center}
 .admin-modal.open{display:flex}
@@ -377,6 +417,214 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.122.555 4.112 1.525 5.84L.057 23.57a.5.5 0 00.611.612l5.73-1.468A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.502-5.17-1.378l-.37-.214-3.838.983.999-3.727-.235-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
 </div>
 
+<!-- PROPOSTA FORM MODAL -->
+<div class="form-modal" id="form-modal">
+  <div class="form-wrap-modal">
+    <div class="form-header-modal">
+      <div>
+        <h2>📋 Formulário de Cadastro</h2>
+        <p>ALS Locadora — Poá - SP</p>
+      </div>
+      <button class="form-close-modal" onclick="fecharFormModal()">✕</button>
+    </div>
+    <div class="form-body-modal">
+      <div class="form-success" id="form-success" style="display:none">
+        <div style="font-size:60px;margin-bottom:16px">✅</div>
+        <h3 style="color:#22c55e;font-family:'Syne',sans-serif;font-size:24px;margin-bottom:12px">Cadastro enviado!</h3>
+        <p style="color:#888;font-size:15px;line-height:1.7">Recebemos suas informações.<br>Em até 24h entraremos em contato pelo WhatsApp.</p>
+        <p style="margin-top:20px;color:#CC0000;font-weight:600">(11) 94515-6170</p>
+      </div>
+      <div id="form-fields">
+        <div class="form-section-title">👤 Dados Pessoais</div>
+        <div class="fm-row fm-row-1"><div class="fg-m"><label>Nome Completo *</label><input type="text" id="fm-nome" placeholder="Seu nome completo"></div></div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Data de Nascimento *</label><input type="date" id="fm-nasc"></div>
+          <div class="fg-m"><label>CPF *</label><input type="text" id="fm-cpf" placeholder="000.000.000-00"></div>
+          <div class="fg-m"><label>RG</label><input type="text" id="fm-rg" placeholder="00.000.000-0"></div>
+        </div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Nome da Mãe</label><input type="text" id="fm-mae" placeholder="Nome completo da mãe"></div>
+          <div class="fg-m"><label>Naturalidade</label><input type="text" id="fm-natural" placeholder="Cidade - Estado"></div>
+        </div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Estado Civil</label>
+            <select id="fm-civil"><option value="">Selecione...</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>União estável</option></select>
+          </div>
+          <div class="fg-m"><label>Profissão</label><input type="text" id="fm-prof" placeholder="Sua profissão atual"></div>
+        </div>
+        <div class="fm-row fm-row-1"><div class="fg-m"><label>Renda Mensal Aproximada</label><input type="text" id="fm-renda" placeholder="Ex: R$ 2.500,00"></div></div>
+
+        <div class="form-section-title">📱 Contato</div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>WhatsApp *</label><input type="tel" id="fm-whats" placeholder="(11) 99999-9999"></div>
+          <div class="fg-m"><label>Telefone</label><input type="tel" id="fm-tel" placeholder="(11) 99999-9999"></div>
+          <div class="fg-m"><label>E-mail</label><input type="email" id="fm-email" placeholder="seu@email.com"></div>
+        </div>
+
+        <div class="form-section-title">📍 Endereço Residencial</div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>CEP *</label><input type="text" id="fm-cep" placeholder="00000-000"></div>
+          <div class="fg-m"><label>Rua / Avenida *</label><input type="text" id="fm-rua" placeholder="Nome da rua"></div>
+        </div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Número</label><input type="text" id="fm-num" placeholder="Nº"></div>
+          <div class="fg-m"><label>Complemento</label><input type="text" id="fm-comp" placeholder="Apto, bloco..."></div>
+          <div class="fg-m"><label>Bairro</label><input type="text" id="fm-bairro" placeholder="Bairro"></div>
+        </div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Cidade *</label><input type="text" id="fm-cidade" placeholder="Cidade"></div>
+          <div class="fg-m"><label>Estado</label><input type="text" id="fm-estado" placeholder="SP"></div>
+          <div class="fg-m"><label>Tempo de Residência</label><input type="text" id="fm-tempo-res" placeholder="Ex: 2 anos"></div>
+        </div>
+        <div class="fg-m"><label>Tipo de Moradia</label>
+          <div class="check-group">
+            <label><input type="radio" name="moradia" value="Própria"> Própria</label>
+            <label><input type="radio" name="moradia" value="Alugada"> Alugada</label>
+            <label><input type="radio" name="moradia" value="Financiada"> Financiada</label>
+            <label><input type="radio" name="moradia" value="Familiar/Cedida"> Familiar / Cedida</label>
+          </div>
+        </div>
+
+        <div class="form-section-title">🪪 CNH</div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Número da CNH *</label><input type="text" id="fm-cnh" placeholder="00000000000"></div>
+          <div class="fg-m"><label>Categoria</label><input type="text" id="fm-cat" placeholder="Ex: B"></div>
+          <div class="fg-m"><label>Validade</label><input type="date" id="fm-cnh-val"></div>
+        </div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Pontos na Carteira</label><input type="text" id="fm-pontos" placeholder="Ex: 0 pontos"></div>
+          <div class="fg-m"><label>1ª Habilitação</label><input type="date" id="fm-cnh-ini"></div>
+        </div>
+        <div class="fg-m"><label>Possui infrações?</label>
+          <div class="check-group">
+            <label><input type="radio" name="infracoes" value="Não"> Não</label>
+            <label><input type="radio" name="infracoes" value="Sim"> Sim — descreva abaixo</label>
+          </div>
+        </div>
+        <div class="fm-row fm-row-1"><div class="fg-m"><label>Descrição (se houver infrações)</label><textarea id="fm-infracoes-desc" placeholder="Descreva as infrações..."></textarea></div></div>
+
+        <div class="form-section-title">🚗 Local de Guarda do Veículo</div>
+        <div class="fg-m"><label>Onde o carro ficará guardado? *</label>
+          <div class="check-group">
+            <label><input type="radio" name="guarda" value="Garagem própria"> Garagem própria</label>
+            <label><input type="radio" name="guarda" value="Garagem alugada"> Garagem alugada</label>
+            <label><input type="radio" name="guarda" value="Estacionamento pago"> Estacionamento pago</label>
+            <label><input type="radio" name="guarda" value="Via pública"> Via pública</label>
+          </div>
+        </div>
+        <div class="fm-row fm-row-1"><div class="fg-m"><label>Endereço de guarda (se diferente do residencial)</label><input type="text" id="fm-end-guarda" placeholder="Rua, número, bairro, cidade"></div></div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Possui câmeras?</label>
+            <div class="check-group"><label><input type="radio" name="cameras" value="Sim"> Sim</label><label><input type="radio" name="cameras" value="Não"> Não</label></div>
+          </div>
+          <div class="fg-m"><label>Possui cobertura/teto?</label>
+            <div class="check-group"><label><input type="radio" name="cobertura" value="Sim"> Sim</label><label><input type="radio" name="cobertura" value="Não"> Não</label></div>
+          </div>
+          <div class="fg-m"><label>Área iluminada?</label>
+            <div class="check-group"><label><input type="radio" name="iluminada" value="Sim"> Sim</label><label><input type="radio" name="iluminada" value="Não"> Não</label></div>
+          </div>
+        </div>
+
+        <div class="form-section-title">📲 Plataformas</div>
+        <div class="fg-m"><label>Plataformas que utiliza</label>
+          <div class="check-group">
+            <label><input type="checkbox" name="plat" value="Uber"> Uber</label>
+            <label><input type="checkbox" name="plat" value="99"> 99</label>
+            <label><input type="checkbox" name="plat" value="inDriver"> inDriver</label>
+            <label><input type="checkbox" name="plat" value="Nenhuma ainda"> Nenhuma ainda</label>
+          </div>
+        </div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Nota média</label><input type="text" id="fm-nota" placeholder="Ex: 4.9"></div>
+          <div class="fg-m"><label>Tempo como motorista</label><input type="text" id="fm-tempo-app" placeholder="Ex: 2 anos"></div>
+        </div>
+
+        <div class="form-section-title">💰 Dados Bancários</div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Banco</label><input type="text" id="fm-banco" placeholder="Ex: Nubank"></div>
+          <div class="fg-m"><label>Agência</label><input type="text" id="fm-agencia" placeholder="0000"></div>
+          <div class="fg-m"><label>Conta</label><input type="text" id="fm-conta" placeholder="00000-0"></div>
+        </div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Chave Pix</label><input type="text" id="fm-pix" placeholder="CPF, e-mail ou telefone"></div>
+          <div class="fg-m"><label>Tipo da Chave</label>
+            <select id="fm-pix-tipo"><option value="">Selecione...</option><option>CPF</option><option>E-mail</option><option>Telefone</option><option>Chave aleatória</option></select>
+          </div>
+        </div>
+
+        <div class="form-section-title">👥 Referências Pessoais</div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Nome — Ref. 1</label><input type="text" id="fm-ref1-nome" placeholder="Nome completo"></div>
+          <div class="fg-m"><label>Telefone — Ref. 1</label><input type="tel" id="fm-ref1-tel" placeholder="(11) 99999-9999"></div>
+          <div class="fg-m"><label>Parentesco — Ref. 1</label><input type="text" id="fm-ref1-rel" placeholder="Ex: Irmão"></div>
+        </div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Nome — Ref. 2</label><input type="text" id="fm-ref2-nome" placeholder="Nome completo"></div>
+          <div class="fg-m"><label>Telefone — Ref. 2</label><input type="tel" id="fm-ref2-tel" placeholder="(11) 99999-9999"></div>
+          <div class="fg-m"><label>Parentesco — Ref. 2</label><input type="text" id="fm-ref2-rel" placeholder="Ex: Amigo"></div>
+        </div>
+
+        <div class="form-section-title">🔒 Dados de Segurança</div>
+        <div class="fm-row fm-row-2">
+          <div class="fg-m"><label>Possui antecedentes criminais?</label>
+            <div class="check-group"><label><input type="radio" name="antec" value="Não"> Não</label><label><input type="radio" name="antec" value="Sim"> Sim</label></div>
+          </div>
+          <div class="fg-m"><label>Já teve veículo bloqueado/retomado?</label>
+            <div class="check-group"><label><input type="radio" name="bloqueio" value="Não"> Não</label><label><input type="radio" name="bloqueio" value="Sim"> Sim</label></div>
+          </div>
+        </div>
+        <div class="fg-m"><label>Situação SPC / Serasa</label>
+          <div class="check-group">
+            <label><input type="radio" name="serasa" value="Sem restrições"> Sem restrições</label>
+            <label><input type="radio" name="serasa" value="Regularizado"> Regularizado</label>
+            <label><input type="radio" name="serasa" value="Pendente"> Com restrições pendentes</label>
+          </div>
+        </div>
+        <div class="fm-row fm-row-3">
+          <div class="fg-m"><label>Contato de Emergência</label><input type="text" id="fm-emerg-nome" placeholder="Nome"></div>
+          <div class="fg-m"><label>Telefone de Emergência</label><input type="tel" id="fm-emerg-tel" placeholder="(11) 99999-9999"></div>
+          <div class="fg-m"><label>Parentesco</label><input type="text" id="fm-emerg-rel" placeholder="Ex: Esposa"></div>
+        </div>
+
+        <div class="form-section-title">✍️ Declaração</div>
+        <div class="aviso-prazo">
+          ⚠️ <strong>PRAZO MÍNIMO: 03 (TRÊS) MESES</strong><br>
+          Pagamento todo domingo via Pix • Caução R$ 1.600,00 na retirada<br>
+          Devolução antecipada = caução retida como multa • Uso restrito ao Estado de SP<br>
+          Franquia: 5.000 km/mês • Bloqueio após 3 dias úteis de inadimplência
+        </div>
+        <div class="fg-m">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;color:#ccc;font-size:13px;text-transform:none;letter-spacing:0">
+            <input type="checkbox" id="fm-aceite" style="margin-top:3px;accent-color:#CC0000;width:16px;height:16px">
+            Declaro que as informações são verdadeiras e estou ciente dos termos acima. *
+          </label>
+        </div>
+        <button class="btn-enviar-form" id="btn-enviar-form" onclick="enviarFormCadastro()">Enviar Cadastro →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LINK GENERATOR MODAL -->
+<div class="admin-modal" id="link-modal" style="z-index:99997">
+  <div class="admin-box" style="max-width:480px">
+    <h3>🔗 Gerar Link de Cadastro</h3>
+    <p>Gere um link único para enviar ao cliente via WhatsApp</p>
+    <div style="margin-bottom:12px">
+      <label style="color:#888;font-size:12px;display:block;margin-bottom:6px;font-weight:600;text-transform:uppercase">NOME DO CLIENTE (opcional)</label>
+      <input type="text" id="link-cliente-nome" placeholder="Ex: João Silva"
+        style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-size:14px;outline:none;font-family:'DM Sans',sans-serif">
+    </div>
+    <div class="link-output" id="link-output"></div>
+    <button class="admin-btn" onclick="gerarLink()">🔗 Gerar Link</button>
+    <div id="link-acoes" style="display:none;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button class="btn-copy-link" onclick="copiarLink()">📋 Copiar Link</button>
+      <button class="btn-whats-link" onclick="enviarLinkWhats()">📲 Enviar WhatsApp</button>
+    </div>
+    <button class="admin-btn-cancel" onclick="fecharLinkModal()">Fechar</button>
+  </div>
+</div>
+
 <!-- ADMIN MODAL -->
 <div class="admin-modal" id="admin-modal">
   <div class="admin-box">
@@ -399,6 +647,10 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#CC0000" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       <span>Gerenciar Fotos</span><small>Adicionar / remover</small>
     </div>
+    <div class="admin-action-btn" onclick="abrirLinkForm()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#CC0000" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      <span>Gerar Link Cadastro</span><small>Enviar para cliente</small>
+    </div>
     <div class="admin-action-btn" onclick="window.open('als-locadora-v2.html','_blank')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#CC0000" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span>Painel de Gestão</span><small>Sistema completo</small>
@@ -411,6 +663,26 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       <span style="color:#555">Sair</span><small>Encerrar sessão</small>
     </div>
+  </div>
+</div>
+
+<!-- LINK GENERATOR MODAL -->
+<div class="admin-modal" id="link-modal" style="z-index:99997">
+  <div class="admin-box" style="max-width:480px">
+    <h3>🔗 Gerar Link de Cadastro</h3>
+    <p>Gere um link único para enviar ao cliente via WhatsApp</p>
+    <div class="fg" style="margin-bottom:12px">
+      <label style="color:#888;font-size:12px;display:block;margin-bottom:6px">NOME DO CLIENTE (opcional)</label>
+      <input type="text" id="link-cliente-nome" placeholder="Ex: João Silva"
+        style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-size:14px;outline:none;font-family:'DM Sans',sans-serif">
+    </div>
+    <div class="link-output" id="link-output"></div>
+    <button class="admin-btn" onclick="gerarLink()" style="margin-bottom:8px">🔗 Gerar Link</button>
+    <div id="link-acoes" style="display:none;display:flex;gap:8px;margin-bottom:10px">
+      <button class="btn-copy-link" onclick="copiarLink()">📋 Copiar</button>
+      <button class="btn-whats-link" onclick="enviarLinkWhats()">📲 Enviar WhatsApp</button>
+    </div>
+    <button class="admin-btn-cancel" onclick="fecharLinkModal()">Fechar</button>
   </div>
 </div>
 
