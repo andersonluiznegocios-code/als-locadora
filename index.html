@@ -606,7 +606,7 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
 </div>
 
 <!-- LINK GENERATOR MODAL -->
-<div class="admin-modal" id="link-modal" style="z-index:99997">
+<div id="link-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100000;align-items:center;justify-content:center;">
   <div class="admin-box" style="max-width:480px">
     <h3>🔗 Gerar Link de Cadastro</h3>
     <p>Gere um link único para enviar ao cliente via WhatsApp</p>
@@ -667,7 +667,7 @@ footer{background:#080808;padding:36px 5%;text-align:center;border-top:3px solid
 </div>
 
 <!-- LINK GENERATOR MODAL -->
-<div class="admin-modal" id="link-modal" style="z-index:99997">
+<div id="link-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:100000;align-items:center;justify-content:center;">
   <div class="admin-box" style="max-width:480px">
     <h3>🔗 Gerar Link de Cadastro</h3>
     <p>Gere um link único para enviar ao cliente via WhatsApp</p>
@@ -833,13 +833,15 @@ var linkGerado = '';
 
 function abrirLinkForm() {
   fecharAdminPanel();
-  var lm = document.getElementById('link-modal');
-  if (lm) { lm.classList.add('open'); }
+  setTimeout(function() {
+    var lm = document.getElementById('link-modal');
+    if (lm) { lm.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  }, 300);
 }
 
 function fecharLinkModal() {
   var lm = document.getElementById('link-modal');
-  if (lm) lm.classList.remove('open');
+  if (lm) { lm.style.display = 'none'; document.body.style.overflow = ''; }
 }
 
 function gerarLink() {
@@ -886,12 +888,12 @@ function enviarLinkWhats() {
 // ===== FORMULÁRIO CADASTRO =====
 function abrirFormModal() {
   var fm = document.getElementById('form-modal');
-  if (fm) { fm.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  if (fm) { fm.style.display = 'block'; document.body.style.overflow = 'hidden'; }
 }
 
 function fecharFormModal() {
   var fm = document.getElementById('form-modal');
-  if (fm) { fm.classList.remove('open'); document.body.style.overflow = ''; }
+  if (fm) { fm.style.display = 'none'; document.body.style.overflow = ''; }
 }
 
 function getRadioVal(name) {
@@ -973,7 +975,7 @@ async function enviarFormCadastro() {
 // Auto-open form if URL has ?cadastro=1
 document.addEventListener('DOMContentLoaded', function() {
   var params = new URLSearchParams(window.location.search);
-  if (params.get('cadastro') === '1') { abrirFormModal(); }
+  if (params.get('cadastro') === '1') { var fm=document.getElementById('form-modal'); if(fm) fm.style.display='block'; document.body.style.overflow='hidden'; }
 });
 
 </script>
